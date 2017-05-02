@@ -3,12 +3,21 @@ function makeTodayDiary() {
   const username = prop.GITHUB_USERNAME;
   const repo = prop.GITHUB_REPO;
   const baseUrl = 'https://api.github.com/repos/' + username + '/' + repo
+  const date = new Date();
+  
   var branch = getBranch(prop.GITHUB_BRANCH, baseUrl, prop);
   var pTree = getTree(branch['commit']['commit']['tree']['sha'], baseUrl, prop);
-  var blob = createBlob('testgas', baseUrl, prop);
+  var blob = createBlob('# ' + Utilities.formatDate(date, 'Asia/Tokyo', "yyyy/MM/dd (EEE)"), baseUrl, prop);
+
   var data = {
-    'tree': pTree['tree'].concat([{'path': 'testgas1.md','mode': '100644','type': 'blob','sha': blob['sha']}])
+    'tree': pTree['tree'].concat([{
+      'path': 'diary/' + Utilities.formatDate(date, 'Asia/Tokyo', "yyyy/MM/dd") + '.md',
+      'mode': '100644',
+      'type': 'blob',
+      'sha': blob['sha']
+    }])
   };
+
   var tree = createTree(data, baseUrl, prop);
   var commit = createCommit('commit!!', tree['sha'], branch['commit']['sha'], baseUrl, prop);
   var result = updateReference(prop.GITHUB_BRANCH, commit['sha'], baseUrl, prop);
