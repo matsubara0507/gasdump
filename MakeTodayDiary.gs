@@ -1,8 +1,5 @@
 function makeTodayDiary() {  
   var prop = PropertiesService.getScriptProperties().getProperties();
-  const username = prop.GITHUB_USERNAME;
-  const repo = prop.GITHUB_REPO;
-  const baseUrl = 'https://api.github.com/repos/' + username + '/' + repo
   const date = new Date();
   
   var option = { name: prop.NAME, email: prop.EMAIL };
@@ -21,6 +18,6 @@ function makeTodayDiary() {
   };
   var tree = github.createTree(data);
   var commit = github.createCommit('commit!!', tree['sha'], branch['commit']['sha']);
-  var result = github.updateReference(prop.GITHUB_BRANCH, commit['sha'], baseUrl, prop);
+  var result = github.updateReference(prop.GITHUB_BRANCH, commit['sha']);
   Logger.log(result);
 }
