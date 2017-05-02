@@ -7,6 +7,9 @@
       this.repo = repo;
       this.token = token;
       this.option = option != null ? option : {};
+      
+      if(!this.option.tz) this.option.tz = Session.getScriptTimeZone();
+      
       this.BASE_URL = 'https://api.github.com/repos/';
       this.API_ENDPOINT = "" + this.BASE_URL + this.userid + '/' + this.repo;
     }
@@ -83,7 +86,7 @@ function makeTodayDiary() {
   const baseUrl = 'https://api.github.com/repos/' + username + '/' + repo
   const date = new Date();
   
-  var option = { name: prop.NAME, email: prop.EMAIL, tz: 'Asia/Tokyo' };
+  var option = { name: prop.NAME, email: prop.EMAIL };
   var github = new this.GitHubAPI(prop.GITHUB_USERNAME, prop.GITHUB_REPO, prop.GITHUB_TOKEN, option);
   
   var branch = github.getBranch(prop.GITHUB_BRANCH);
