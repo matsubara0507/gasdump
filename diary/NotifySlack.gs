@@ -17,9 +17,9 @@ function doPost(e) {
     return;
   }
   
-  const date = new Date();
+  const yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
   const params = { headers : { Authorization: 'token ' + prop.GITHUB_TOKEN } };
-  const filepath = Utilities.formatDate(date, Session.getScriptTimeZone(), "'diary/'yyyy/MM/01'.md'")
+  const filepath = Utilities.formatDate(yesterday, Session.getScriptTimeZone(), "'diary/'yyyy/MM/dd'.md'")
   const rawurl = 'https://raw.githubusercontent.com/';
   const ghurl = 'https://github.com/';
   const repourl = prop.GITHUB_USERNAME + '/' + prop.GITHUB_REPO + '/'
