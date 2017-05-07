@@ -1,3 +1,11 @@
+/**
+* Create an GitHub API Client 
+* @param {string} userid GitHub User ID of target 
+* @param {string} repo GitHub repository name of target 
+* @param {string} token youre GitHub OAuth token (ref: https://developer.github.com/v3/oauth/) 
+* @param {Object} option your name, your email, timezone that be used when e.g. commit   
+* @return {GitHub} return an GitHub API Client 
+*/
 function create(userid, repo, token, option) {
   return new GitHub(userid, repo, token, option);
 }
@@ -7,14 +15,6 @@ function create(userid, repo, token, option) {
   GitHubAPI = (function(){
     GitHubAPI.name = 'GitHubAPI';
     
-    /**
-    * Create an GitHub API Client 
-    * @param {string} userid GitHub User ID of target 
-    * @param {string} repo GitHub repository name of target 
-    * @param {string} token youre GitHub OAuth token (ref: https://developer.github.com/v3/oauth/) 
-    * @param {string} option your name, your email, timezone that be used when e.g. commit   
-    * @return {GitHub} return an GitHub API Client 
-    */
     function GitHubAPI(userid, repo, token, option) {
       this.userid = userid;
       this.repo = repo;
