@@ -86,6 +86,17 @@ function create(userid, repo, token, option) {
     GitHubAPI.prototype.createTree = function(data) {
       return this.post('/git/trees', data);
     };
+    GitHubAPI.prototype.createPullRequest = function(title, head, base, body, maintainer_can_modify) {
+      var data = {
+        'title': title,
+        'head': head,
+        'base': base,
+        'body': body == undefined ? "" : body,
+        'maintainer_can_modify': maintainer_can_modify == undefined ? false : maintainer_can_modify
+      };
+      return this.post('/pulls', data);
+    };
+    
     return GitHubAPI;
   })();
   
