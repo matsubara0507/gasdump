@@ -17,7 +17,7 @@ function makeTodayDiary() {
     }])
   };
   var tree = github.createTree(data);
-  var commit = github.createCommit('commit!!', tree['sha'], branch['commit']['sha']);
+  var commit = github.createCommit('日付変わったで', tree['sha'], branch['commit']['sha']);
   var result = github.updateReference(prop.GITHUB_WRITE_BRANCH, commit['sha']);
   Logger.log(result);
 }
