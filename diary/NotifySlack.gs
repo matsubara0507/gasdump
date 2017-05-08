@@ -7,13 +7,6 @@ function doPost(e) {
   if (jsonData['action'] != 'closed' 
       || jsonData['pull_request']['head']['ref'] != prop.GITHUB_WRITE_BRANCH 
       || jsonData['pull_request']['base']['ref'] != prop.GITHUB_READ_BRANCH) {
-    /* Log */  
-    var sheet = SpreadsheetApp.openById(prop.SPREAD_SHEET_ID).getSheetByName(prop.SHEET_NAME);
-    var count = sheet.getRange(1, 1).getValue();
-    sheet.getRange(count + 2, 1).setValue(jsonData['action']);
-    sheet.getRange(count + 2, 2).setValue(jsonData['pull_request']['head']['ref']);
-    sheet.getRange(count + 2, 3).setValue(jsonData['pull_request']['base']['ref']);
-    sheet.getRange(1, 1).setValue(count + 1);
     return;
   }
   
