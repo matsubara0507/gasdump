@@ -15,6 +15,7 @@ function doPost(e) {
   
   var option = { name: prop.NAME, email: prop.EMAIL };
   var github = new GitHubAPI.GitHubAPI(prop.GITHUB_USERNAME, prop.GITHUB_REPO, prop.GITHUB_TOKEN, option);
+  Logger.log(createEmptyCommit(github, prop))
   Logger.log(createTodayPullRequest(today, github, prop));
 }
 
@@ -39,6 +40,15 @@ function postSnipeetToSlack(today, jsonData, prop) {
     'channels': prop.SLACK_CHANNEL
   };
   return  UrlFetchApp.fetch('https://slack.com/api/files.upload', { method: 'POST', payload: data} );
+}
+
+function createEmptyCommit(github, prop) {
+  var branch = github.getBranch(prop.GITHUB_WRITE_BRANCH);
+  var pTree = github.getTree(branch['commit']['commit']['tree']['sha']);
+  var data = { 'tree': pTree['tree'] };
+  var tree = github.createTree(data);
+  var commit = github.createCommit('empty commit!', tree['sha'], branch['commit']['sha']);
+  return github.updateReference(prop.GITHUB_WRITE_BRANCH, commit['sha']);
 }
 
 function createTodayPullRequest(today, github, prop) {
