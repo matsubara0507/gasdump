@@ -11,7 +11,7 @@ function doPost(e) {
   }
   
   const today = new Date();
-  Logger.log(postSnippetToSlack(today, jsonDara, prop));
+  Logger.log(postSnippetToSlack(today, jsonData, prop));
   
   var option = { name: prop.NAME, email: prop.EMAIL };
   var github = new GitHubAPI.GitHubAPI(prop.GITHUB_USERNAME, prop.GITHUB_REPO, prop.GITHUB_TOKEN, option);
@@ -19,7 +19,7 @@ function doPost(e) {
   Logger.log(createTodayPullRequest(today, github, prop));
 }
 
-function postSnipeetToSlack(today, jsonData, prop) {
+function postSnippetToSlack(today, jsonData, prop) {
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const params = { headers : { Authorization: 'token ' + prop.GITHUB_TOKEN } };
   const filepath = Utilities.formatDate(yesterday, Session.getScriptTimeZone(), "'diary/'yyyy/MM/dd'.md'")
