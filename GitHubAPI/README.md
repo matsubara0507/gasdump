@@ -4,7 +4,7 @@
 
 ## Usage
 
-ライブラリの API ID は `MpVhtQfIUrL3OfsqY2BMtnIv0J4XZf0PJ`
+ライブラリの API ID は `1F4yn329GjHKdcXu9nm0uBZHFo40NGRUF8dfZCTHM1KjXpOXYr2BzIIcJ`
 
 ## 注意
 
