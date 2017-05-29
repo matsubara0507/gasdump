@@ -10,19 +10,18 @@ function doPost(e) {
     return;
   }
   
-  const today = new Date();
-  Logger.log(postSnippetToSlack(today, jsonData, prop));
+  const date = new Date(jsonData['pull_request']['title'])
+  Logger.log(postSnippetToSlack(date, prop));
   
   var option = { name: prop.NAME, email: prop.EMAIL };
   var github = new GitHubAPI.GitHubAPI(prop.GITHUB_USERNAME, prop.GITHUB_REPO, prop.GITHUB_TOKEN, option);
   Logger.log(createEmptyCommit(github, prop))
-  Logger.log(createTodayPullRequest(today, github, prop));
+  Logger.log(createTodayPullRequest(date, github, prop));
 }
 
-function postSnippetToSlack(today, jsonData, prop) {
-  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+function postSnippetToSlack(date, prop) {
   const params = { headers : { Authorization: 'token ' + prop.GITHUB_TOKEN } };
-  const filepath = Utilities.formatDate(yesterday, Session.getScriptTimeZone(), "'diary/'yyyy/MM/dd'.md'")
+  const filepath = Utilities.formatDate(date, Session.getScriptTimeZone(), "'diary/'yyyy/MM/dd'.md'")
   const rawurl = 'https://raw.githubusercontent.com/';
   const ghurl = 'https://github.com/';
   const repourl = prop.GITHUB_USERNAME + '/' + prop.GITHUB_REPO + '/'
@@ -51,7 +50,8 @@ function createEmptyCommit(github, prop) {
   return github.updateReference(prop.GITHUB_WRITE_BRANCH, commit['sha']);
 }
 
-function createTodayPullRequest(today, github, prop) {
-  var title = Utilities.formatDate(today, Session.getScriptTimeZone(), "yyyy年M月d日");  
+function createTodayPullRequest(date, github, prop) {
+  const previousDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+  var title = Utilities.formatDate(previousDay, Session.getScriptTimeZone(), "yyyy/M/d");  
   return github.createPullRequest(title, prop.GITHUB_WRITE_BRANCH, prop.GITHUB_READ_BRANCH);
 }
