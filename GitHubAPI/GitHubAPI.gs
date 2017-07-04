@@ -34,6 +34,7 @@ function create(userid, repo, token, option) {
           break;
         case 'POST':
         case 'PATCH':
+        case 'PUT':
           params = {
             headers: {
               Authorization: 'token ' + this.token
@@ -53,7 +54,8 @@ function create(userid, repo, token, option) {
     GitHubAPI.prototype.get = function(endpoint){ return this.runREST('GET', endpoint, null); };
     GitHubAPI.prototype.post = function(endpoint, data){ return this.runREST('POST', endpoint, data); };
     GitHubAPI.prototype.patch = function(endpoint, data){ return this.runREST('PATCH', endpoint, data); };
-    
+    GitHubAPI.prototype.put = function(endpoint, data){ return this.runREST('PUT', endpoint, data); };
+
     GitHubAPI.prototype.toISOFormat = function(date, tz) {
       return Utilities.formatDate(date, tz, "yyyy-MM-dd'T'HH:mm:ssXXX");
     };
@@ -61,8 +63,26 @@ function create(userid, repo, token, option) {
     GitHubAPI.prototype.getBranch = function(branchName) {
       return this.get('/branches/' + branchName);
     };
+    GitHubAPI.prototype.createBranch = function(baseBranchName, newBranchName) {
+      var branch = this.getBranch(baseBranchName);
+      return this.post('/git/refs', {
+        ref: 'refs/heads/' + newBranchName,
+        sha: branch['commit']['sha']
+      });
+    };
     GitHubAPI.prototype.createBlob = function(content) {
       return this.post('/git/blobs', { 'content': content, 'encoding': 'utf-8' });
+    };
+    GitHubAPI.prototype.updateContents = function(path, message, content, sha, branch) {
+      var param = {
+        'message': message,
+        'content': content,
+        'sha': sha
+      };
+      if (branch) {
+        param['branch'] = branch;
+      }
+      return this.put('/contents/' + path, param);
     };
     GitHubAPI.prototype.createCommit = function(message, treeSha, parentSha) {
       var data = {
