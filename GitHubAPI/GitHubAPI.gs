@@ -7,7 +7,7 @@
 * @return {GitHub} return an GitHub API Client 
 */
 function create(userid, repo, token, option) {
-  return new GitHub(userid, repo, token, option);
+  return new GitHubAPI(userid, repo, token, option);
 }
 
 (function(exports) {
